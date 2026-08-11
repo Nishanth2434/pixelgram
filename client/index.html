@@ -23,7 +23,7 @@
   <main class="main-container">
     <div class="feed-column" id="feed-container">
       <!-- Create Post Box -->
-      <div class="post-card" style="padding: 20px;">
+      <div id="create-post-container" class="post-card" style="padding: 20px; display: none;">
         <h3 style="margin-bottom: 15px;">Create Post</h3>
         <form id="create-post-form" style="display: flex; flex-direction: column; gap: 10px;">
           <input type="file" id="post-image" accept="image/*" required>
@@ -53,9 +53,16 @@
       const createPostForm = document.getElementById('create-post-form');
       const suggestionsList = document.getElementById('suggestions-list');
 
-      // Load feed
+      // Load feed or explore
       try {
-        const res = await window.api.getFeed();
+        let res;
+        if (currentUser) {
+          document.getElementById('create-post-container').style.display = 'block';
+          res = await window.api.getFeed();
+        } else {
+          res = await window.api.getExplore();
+        }
+        
         postsList.innerHTML = '';
         res.data.forEach(post => {
           postsList.appendChild(window.components.renderPost(post));
@@ -66,19 +73,26 @@
 
       // Load suggested users
       try {
-        const res = await window.api.getSuggestedUsers();
-        if (res.data.length > 0) {
-          suggestionsList.innerHTML = res.data.map(u => `
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-              <a href="profile.html?username=${u.username}" style="display: flex; align-items: center; gap: 10px;">
-                <img src="${window.components.API_BASE}${u.avatarUrl}" class="avatar" style="margin:0">
-                <span style="font-weight:600; font-size:0.9rem">${u.username}</span>
-              </a>
-              <a href="profile.html?username=${u.username}" style="color: var(--primary-color); font-weight: 600; font-size: 0.8rem;">View</a>
-            </div>
-          `).join('');
+        if (currentUser) {
+          const res = await window.api.getSuggestedUsers();
+          if (res.data.length > 0) {
+            suggestionsList.innerHTML = res.data.map(u => `
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <a href="profile.html?username=${u.username}" style="display: flex; align-items: center; gap: 10px;">
+                  <img src="${window.components.API_BASE}${u.avatarUrl}" class="avatar" style="margin:0">
+                  <span style="font-weight:600; font-size:0.9rem">${u.username}</span>
+                </a>
+                <a href="profile.html?username=${u.username}" style="color: var(--primary-color); font-weight: 600; font-size: 0.8rem;">View</a>
+              </div>
+            `).join('');
+          } else {
+            suggestionsList.innerHTML = '<p style="font-size: 0.9rem; color: var(--text-light);">No suggestions right now.</p>';
+          }
         } else {
-          suggestionsList.innerHTML = '<p style="font-size: 0.9rem; color: var(--text-light);">No suggestions right now.</p>';
+          suggestionsList.innerHTML = `
+            <p style="font-size: 0.9rem; color: var(--text-light); margin-bottom: 10px;">Log in to follow users, like photos, and comment.</p>
+            <button class="btn-primary" style="width: 100%" onclick="window.location.href='login.html'">Log In</button>
+          `;
         }
       } catch (err) {
         console.error(err);

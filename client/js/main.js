@@ -10,9 +10,9 @@ const checkAuth = async () => {
       window.location.href = 'index.html';
     }
   } catch (err) {
-    // Not logged in
-    const isPublicPage = window.location.pathname.includes('login.html') || window.location.pathname.includes('signup.html');
-    if (!isPublicPage) {
+    currentUser = null;
+    // If not logged in, only redirect if on a protected page
+    if (window.location.pathname.includes('edit-profile.html')) {
       window.location.href = 'login.html';
     }
   }
@@ -20,31 +20,42 @@ const checkAuth = async () => {
 
 const setupNavbar = () => {
   const logoutBtn = document.getElementById('logout-btn');
-  if (logoutBtn) {
-    logoutBtn.addEventListener('click', async (e) => {
-      e.preventDefault();
-      try {
-        await window.api.logout();
-        window.location.href = 'login.html';
-      } catch (err) {
-        console.error(err);
-      }
-    });
-  }
-  
   const profileLink = document.getElementById('nav-profile-link');
-  if (profileLink && currentUser) {
-    profileLink.href = `profile.html?username=${currentUser.username}`;
+  
+  if (currentUser) {
+    if (logoutBtn) {
+      logoutBtn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        try {
+          await window.api.logout();
+          window.location.href = 'login.html';
+        } catch (err) {
+          console.error(err);
+        }
+      });
+    }
+    
+    if (profileLink) {
+      profileLink.href = `profile.html?username=${currentUser.username}`;
+    }
+  } else {
+    if (logoutBtn) {
+      logoutBtn.textContent = 'Log In';
+      logoutBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = 'login.html';
+      });
+    }
+    if (profileLink) {
+      profileLink.href = 'login.html';
+    }
   }
 };
 
 const init = async () => {
   await checkAuth();
-  if (currentUser) {
-    setupNavbar();
-    // Dispatch custom event to let other scripts know user is loaded
-    window.dispatchEvent(new Event('userLoaded'));
-  }
+  setupNavbar();
+  window.dispatchEvent(new Event('userLoaded'));
 };
 
 document.addEventListener('DOMContentLoaded', init);

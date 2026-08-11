@@ -3,7 +3,7 @@
 const API_BASE = ''; // empty string so image urls load from root (/uploads/...)
 
 function renderPost(post) {
-  const isLiked = post.likes.includes(currentUser._id);
+  const isLiked = currentUser ? post.likes.includes(currentUser._id) : false;
   const heartIcon = isLiked ? '❤️' : '🤍';
   const heartClass = isLiked ? 'liked' : '';
   
@@ -44,6 +44,10 @@ function renderPost(post) {
   const likeCountEl = postEl.querySelector('.like-count');
   
   const toggleLike = async (showOverlay = false) => {
+    if (!currentUser) {
+      window.location.href = 'login.html';
+      return;
+    }
     try {
       const currentlyLiked = likeBtn.classList.contains('liked');
       if (currentlyLiked) {
@@ -101,6 +105,10 @@ function renderPost(post) {
 
   commentForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (!currentUser) {
+      window.location.href = 'login.html';
+      return;
+    }
     try {
       await window.api.addComment(post._id, commentInput.value);
       commentInput.value = '';

@@ -55,7 +55,12 @@
   <script>
     window.addEventListener('userLoaded', async () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const username = urlParams.get('username') || currentUser.username;
+      const username = urlParams.get('username') || (currentUser ? currentUser.username : null);
+      
+      if (!username) {
+        window.location.href = 'login.html';
+        return;
+      }
       
       try {
         const userRes = await window.api.getUserProfile(username);
@@ -71,19 +76,21 @@
         document.getElementById('stat-following').textContent = user.following.length;
 
         const actionsDiv = document.getElementById('profile-actions');
-        if (currentUser.username === user.username) {
+        if (currentUser && currentUser.username === user.username) {
           actionsDiv.innerHTML = `<button class="btn-secondary" onclick="window.location.href='edit-profile.html'">Edit Profile</button>`;
         } else {
-          const isFollowing = currentUser.following.includes(user._id);
+          const isFollowing = currentUser ? currentUser.following.includes(user._id) : false;
           if (isFollowing) {
             actionsDiv.innerHTML = `<button class="btn-secondary" id="unfollow-btn">Following</button>`;
             document.getElementById('unfollow-btn').addEventListener('click', async () => {
+              if (!currentUser) return window.location.href = 'login.html';
               await window.api.unfollowUser(user._id);
               window.location.reload();
             });
           } else {
             actionsDiv.innerHTML = `<button class="btn-primary" id="follow-btn">Follow</button>`;
             document.getElementById('follow-btn').addEventListener('click', async () => {
+              if (!currentUser) return window.location.href = 'login.html';
               await window.api.followUser(user._id);
               window.location.reload();
             });
