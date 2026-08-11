@@ -14,14 +14,21 @@ const fetchAPI = async (endpoint, options = {}) => {
     }
   }
 
-  const response = await fetch(`${API_URL}${endpoint}`, options);
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.error || 'Something went wrong');
+  const res = await fetch(`${API_URL}${endpoint}`, options);
+    
+  const contentType = res.headers.get("content-type");
+  if (contentType && contentType.indexOf("application/json") !== -1) {
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Something went wrong');
+    return data;
+  } else {
+    const text = await res.text();
+    if (!res.ok) {
+      if (res.status === 500) throw new Error('Server error: Make sure your Environment Variables (MONGODB_URI) are set in Vercel!');
+      throw new Error(`Server returned ${res.status}: ${text.substring(0, 50)}...`);
+    }
+    return text;
   }
-
-  return data;
 };
 
 // Auth
