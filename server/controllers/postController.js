@@ -12,7 +12,8 @@ exports.createPost = async (req, res, next) => {
 
     const newPost = await Post.create({
       user: req.user.id,
-      imageUrl: `/uploads/${req.file.filename}`,
+      mediaUrl: `/uploads/${req.file.filename}`,
+      mediaType: 'image',
       caption: req.body.caption || ''
     });
 

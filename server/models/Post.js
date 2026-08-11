@@ -6,9 +6,14 @@ const PostSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
-  imageUrl: {
+  mediaUrl: {
     type: String,
-    required: [true, 'Please add an image']
+    required: [true, 'Please add a media URL']
+  },
+  mediaType: {
+    type: String,
+    enum: ['image', 'video'],
+    default: 'image'
   },
   caption: {
     type: String,

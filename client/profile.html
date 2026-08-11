@@ -106,21 +106,37 @@
         });
 
         // Load posts
-        const postsRes = await window.api.getUserPosts(user.username);
-        const posts = postsRes.data;
-        document.getElementById('stat-posts').textContent = posts.length;
+        const postsRes = await window.api.getUserPosts(username);
+        const postsGrid = document.getElementById('profile-grid');
         
-        const grid = document.getElementById('profile-grid');
-        grid.innerHTML = posts.map(post => `
-          <div class="grid-item" onclick="window.location.href='post.html?id=${post._id}'">
-            <img src="${window.components.API_BASE}${post.imageUrl}" alt="Post image">
-            <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.3); opacity: 0; display:flex; justify-content:center; align-items:center; color:white; font-weight:bold; gap: 15px; transition: opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
-              <span>❤️ ${post.likes.length}</span>
-              <span>💬 ${post.commentsCount}</span>
-            </div>
-          </div>
-        `).join('');
+        if (postsRes.data.length === 0) {
+          postsGrid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-light); padding: 40px;">No posts yet.</p>';
+        } else {
+          postsGrid.innerHTML = postsRes.data.map(post => {
+            const mediaUrl = post.mediaUrl.startsWith('http') ? post.mediaUrl : `${window.components.API_BASE}${post.mediaUrl}`;
+            const isVideo = post.mediaType === 'video';
+            const mediaHtml = isVideo 
+              ? `<video src="${mediaUrl}" class="grid-video" loop muted playsinline style="width:100%; height:100%; object-fit:cover; pointer-events:none;"></video>`
+              : `<img src="${mediaUrl}" alt="Post image">`;
+            const videoIcon = isVideo ? `<div style="position:absolute; top:8px; right:8px; font-size:1.2rem; color:white; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); z-index: 5;">▶️</div>` : '';
 
+            return `
+            <div class="grid-item" onclick="window.location.href='post.html?id=${post._id}'">
+              ${mediaHtml}
+              ${videoIcon}
+              <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.3); opacity: 0; display:flex; justify-content:center; align-items:center; color:white; font-weight:bold; gap: 15px; transition: opacity 0.2s; z-index: 10;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
+                <span>❤️ ${post.likes.length}</span>
+                <span>💬 ${post.commentsCount}</span>
+              </div>
+            </div>
+            `;
+          }).join('');
+
+          // Observe videos for autoplay
+          if (window.components && window.components.videoObserver) {
+            document.querySelectorAll('.grid-video').forEach(v => window.components.videoObserver.observe(v));
+          }
+        }
       } catch (err) {
         console.error(err);
         document.querySelector('.main-container').innerHTML = `<h2>User not found</h2>`;

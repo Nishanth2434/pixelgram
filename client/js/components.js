@@ -2,6 +2,17 @@
 
 const API_BASE = ''; // empty string so image urls load from root (/uploads/...)
 
+// Intersection Observer for autoplaying videos
+const videoObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.play().catch(e => console.log('Autoplay blocked:', e));
+    } else {
+      entry.target.pause();
+    }
+  });
+}, { threshold: 0.5 });
+
 function renderPost(post) {
   const isLiked = currentUser ? post.likes.includes(currentUser._id) : false;
   const heartIcon = isLiked ? '❤️' : '🤍';
@@ -11,15 +22,23 @@ function renderPost(post) {
   postEl.className = 'post-card';
   postEl.dataset.id = post._id;
   
+  const mediaUrl = post.mediaUrl.startsWith('http') ? post.mediaUrl : `${API_BASE}${post.mediaUrl}`;
+  const isVideo = post.mediaType === 'video';
+  
+  const mediaHtml = isVideo 
+    ? `<video src="${mediaUrl}" class="post-video" loop muted playsinline style="width: 100%; max-height: 600px; object-fit: contain; background: #000;"></video>`
+    : `<img src="${mediaUrl}" alt="Post Image" style="width: 100%; max-height: 600px; object-fit: cover;">`;
+
   postEl.innerHTML = `
-    <div class="post-header">
+    <div style="padding: 15px; display: flex; align-items: center; gap: 10px;">
       <a href="profile.html?username=${post.user.username}">
-        <img src="${API_BASE}${post.user.avatarUrl}" alt="${post.user.username}" class="avatar">
+        <img src="${API_BASE}${post.user.avatarUrl}" class="avatar" style="margin: 0; width: 32px; height: 32px;">
       </a>
-      <a href="profile.html?username=${post.user.username}" class="post-username">${post.user.username}</a>
+      <a href="profile.html?username=${post.user.username}" style="font-weight: 600;">${post.user.username}</a>
     </div>
-    <div class="post-image-container" style="cursor: pointer; position: relative;">
-      <img src="${API_BASE}${post.imageUrl}" alt="Post image" class="post-image">
+    
+    <div class="post-image-container" style="position: relative; cursor: pointer; display: flex; justify-content: center; background: #fafafa;">
+      ${mediaHtml}
       <div class="heart-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0); font-size: 5rem; opacity: 0; transition: all 0.3s; color: var(--heart-color);">❤️</div>
     </div>
     <div class="post-actions">
@@ -119,6 +138,11 @@ function renderPost(post) {
       console.error(err);
     }
   });
+
+  if (isVideo) {
+    const videoEl = postEl.querySelector('.post-video');
+    if (videoEl) videoObserver.observe(videoEl);
+  }
 
   return postEl;
 }
