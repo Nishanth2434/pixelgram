@@ -1,6 +1,6 @@
 // components.js - Reusable UI logic
 
-const API_BASE = 'http://localhost:5000'; // needed for image urls if relative
+const API_BASE = ''; // empty string so image urls load from root (/uploads/...)
 
 function renderPost(post) {
   const isLiked = post.likes.includes(currentUser._id);

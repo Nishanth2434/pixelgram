@@ -4,6 +4,7 @@
   "description": "Instagram-style social media platform",
   "main": "server/server.js",
   "scripts": {
+    "start": "node server/server.js",
     "server": "cd server && npm run dev",
     "client": "cd client && npx serve -l 3000",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
