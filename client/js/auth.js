@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const password = document.getElementById('password').value;
       
       try {
-        await window.api.signup(username, email, password, fullName);
+        await window.api.signup({ username, email, password, fullName });
         window.location.href = 'index.html';
       } catch (err) {
         errorMsg.textContent = err.message;
