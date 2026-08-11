@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post - PixelGram</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">PixelGram</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-icon" title="Home">🏠</a>
+        <a href="explore.html" class="nav-icon" title="Explore">🧭</a>
+        <a id="nav-profile-link" href="#" class="nav-icon" title="Profile">👤</a>
+        <button id="logout-btn" class="nav-icon" title="Logout">🚪</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-container" style="justify-content: center;">
+    <div id="single-post-container" style="width: 100%; max-width: 600px;">
+      <!-- Post will be rendered here -->
+    </div>
+    
+    <div class="post-card" style="width: 100%; max-width: 600px; padding: 20px; margin-top: -20px; border-top-left-radius: 0; border-top-right-radius: 0; border-top: none;">
+      <h4 style="margin-bottom: 15px;">Comments</h4>
+      <div id="comments-list" style="margin-bottom: 15px; max-height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;">
+        <!-- Comments here -->
+      </div>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    window.addEventListener('userLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const postId = urlParams.get('id');
+      
+      if (!postId) {
+        document.getElementById('single-post-container').innerHTML = '<h2>Post not found</h2>';
+        return;
+      }
+
+      try {
+        const postRes = await window.api.getPost(postId);
+        const post = postRes.data;
+        
+        const container = document.getElementById('single-post-container');
+        container.appendChild(window.components.renderPost(post));
+
+        // Get comments
+        const commentsRes = await window.api.getComments(postId);
+        const comments = commentsRes.data;
+        const commentsList = document.getElementById('comments-list');
+        
+        if (comments.length === 0) {
+          commentsList.innerHTML = '<p style="color: var(--text-light); font-size: 0.9rem;">No comments yet.</p>';
+        } else {
+          commentsList.innerHTML = comments.map(c => `
+            <div style="display: flex; gap: 10px; align-items: flex-start;">
+              <a href="profile.html?username=${c.user.username}">
+                <img src="${window.components.API_BASE}${c.user.avatarUrl}" class="avatar" style="width: 24px; height: 24px;">
+              </a>
+              <div>
+                <a href="profile.html?username=${c.user.username}" style="font-weight: 600; font-size: 0.9rem; margin-right: 5px;">${c.user.username}</a>
+                <span style="font-size: 0.9rem;">${c.text}</span>
+                <div style="font-size: 0.7rem; color: var(--text-light); margin-top: 2px;">${new Date(c.createdAt).toLocaleDateString()}</div>
+              </div>
+            </div>
+          `).join('');
+        }
+
+      } catch (err) {
+        console.error(err);
+        document.getElementById('single-post-container').innerHTML = '<h2>Post not found</h2>';
+      }
+    });
+  </script>
+</body>
+</html>

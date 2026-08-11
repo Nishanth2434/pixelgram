@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore - PixelGram</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">PixelGram</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-icon" title="Home">🏠</a>
+        <a href="explore.html" class="nav-icon" title="Explore" style="color: var(--primary-color)">🧭</a>
+        <a id="nav-profile-link" href="#" class="nav-icon" title="Profile">👤</a>
+        <button id="logout-btn" class="nav-icon" title="Logout">🚪</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-container" style="max-width: 975px; flex-direction: column;">
+    <div class="grid-container" id="explore-grid"></div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    window.addEventListener('userLoaded', async () => {
+      const grid = document.getElementById('explore-grid');
+      
+      try {
+        const res = await window.api.getExplore();
+        grid.innerHTML = res.data.map(post => `
+          <div class="grid-item" onclick="window.location.href='post.html?id=${post._id}'">
+            <img src="${window.components.API_BASE}${post.imageUrl}" alt="Post image">
+            <div style="position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.3); opacity: 0; display:flex; justify-content:center; align-items:center; color:white; font-weight:bold; gap: 15px; transition: opacity 0.2s;" onmouseover="this.style.opacity=1" onmouseout="this.style.opacity=0">
+              <span>❤️ ${post.likes.length}</span>
+              <span>💬 ${post.commentsCount}</span>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        console.error(err);
+      }
+    });
+  </script>
+</body>
+</html>

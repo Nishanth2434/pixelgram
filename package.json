@@ -1,0 +1,16 @@
+{
+  "name": "pixelgram",
+  "version": "1.0.0",
+  "description": "Instagram-style social media platform",
+  "main": "server/server.js",
+  "scripts": {
+    "server": "cd server && npm run dev",
+    "client": "cd client && npx serve -l 3000",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "seed": "node server/seed.js"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "dependencies": {}
+}

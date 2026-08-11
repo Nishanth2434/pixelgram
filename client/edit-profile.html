@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Profile - PixelGram</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">PixelGram</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-icon" title="Home">🏠</a>
+        <a href="explore.html" class="nav-icon" title="Explore">🧭</a>
+        <a id="nav-profile-link" href="#" class="nav-icon" title="Profile">👤</a>
+        <button id="logout-btn" class="nav-icon" title="Logout">🚪</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-container" style="justify-content: center;">
+    <div class="post-card" style="width: 100%; max-width: 600px; padding: 30px;">
+      <h2 style="margin-bottom: 20px;">Edit Profile</h2>
+      <form id="edit-profile-form" style="display: flex; flex-direction: column; gap: 15px;">
+        
+        <div style="display: flex; align-items: center; gap: 20px;">
+          <img id="current-avatar" src="" alt="Avatar" class="avatar avatar-large" style="width: 80px; height: 80px;">
+          <div>
+            <div id="username-display" style="font-weight: 600; margin-bottom: 5px;"></div>
+            <input type="file" id="avatar" accept="image/*">
+          </div>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <label for="fullName" style="font-weight: 600;">Full Name</label>
+          <input type="text" id="fullName" required>
+        </div>
+        
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+          <label for="bio" style="font-weight: 600;">Bio</label>
+          <textarea id="bio" rows="3"></textarea>
+        </div>
+
+        <button type="submit" class="btn-primary" style="align-self: flex-start; margin-top: 10px;">Submit</button>
+        <div id="msg" style="margin-top: 10px; font-weight: 600;"></div>
+      </form>
+    </div>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    window.addEventListener('userLoaded', () => {
+      document.getElementById('current-avatar').src = `${window.components.API_BASE}${currentUser.avatarUrl}`;
+      document.getElementById('username-display').textContent = currentUser.username;
+      document.getElementById('fullName').value = currentUser.fullName;
+      document.getElementById('bio').value = currentUser.bio || '';
+
+      document.getElementById('edit-profile-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById('avatar');
+        const fullName = document.getElementById('fullName').value;
+        const bio = document.getElementById('bio').value;
+        const msg = document.getElementById('msg');
+
+        const formData = new FormData();
+        formData.append('fullName', fullName);
+        formData.append('bio', bio);
+        if (fileInput.files[0]) {
+          formData.append('avatar', fileInput.files[0]);
+        }
+
+        try {
+          const res = await window.api.updateProfile(formData);
+          msg.style.color = 'green';
+          msg.textContent = 'Profile updated successfully!';
+          setTimeout(() => {
+            window.location.href = `profile.html?username=${currentUser.username}`;
+          }, 1500);
+        } catch (err) {
+          msg.style.color = 'var(--heart-color)';
+          msg.textContent = err.message;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixelGram</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-container">
+      <a href="index.html" class="logo">PixelGram</a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-icon" title="Home">🏠</a>
+        <a href="explore.html" class="nav-icon" title="Explore">🧭</a>
+        <a id="nav-profile-link" href="#" class="nav-icon" title="Profile">👤</a>
+        <button id="logout-btn" class="nav-icon" title="Logout">🚪</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main-container">
+    <div class="feed-column" id="feed-container">
+      <!-- Create Post Box -->
+      <div class="post-card" style="padding: 20px;">
+        <h3 style="margin-bottom: 15px;">Create Post</h3>
+        <form id="create-post-form" style="display: flex; flex-direction: column; gap: 10px;">
+          <input type="file" id="post-image" accept="image/*" required>
+          <textarea id="post-caption" placeholder="Write a caption..." rows="2"></textarea>
+          <button type="submit" class="btn-primary" style="align-self: flex-start;">Post</button>
+        </form>
+      </div>
+      
+      <!-- Posts go here -->
+      <div id="posts-list"></div>
+    </div>
+    
+    <aside class="sidebar">
+      <div id="suggested-users">
+        <h4 style="color: var(--text-light); margin-bottom: 15px;">Suggestions For You</h4>
+        <div id="suggestions-list"></div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/components.js"></script>
+  <script>
+    window.addEventListener('userLoaded', async () => {
+      const postsList = document.getElementById('posts-list');
+      const createPostForm = document.getElementById('create-post-form');
+      const suggestionsList = document.getElementById('suggestions-list');
+
+      // Load feed
+      try {
+        const res = await window.api.getFeed();
+        postsList.innerHTML = '';
+        res.data.forEach(post => {
+          postsList.appendChild(window.components.renderPost(post));
+        });
+      } catch (err) {
+        console.error(err);
+      }
+
+      // Load suggested users
+      try {
+        const res = await window.api.getSuggestedUsers();
+        if (res.data.length > 0) {
+          suggestionsList.innerHTML = res.data.map(u => `
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <a href="profile.html?username=${u.username}" style="display: flex; align-items: center; gap: 10px;">
+                <img src="${window.components.API_BASE}${u.avatarUrl}" class="avatar" style="margin:0">
+                <span style="font-weight:600; font-size:0.9rem">${u.username}</span>
+              </a>
+              <a href="profile.html?username=${u.username}" style="color: var(--primary-color); font-weight: 600; font-size: 0.8rem;">View</a>
+            </div>
+          `).join('');
+        } else {
+          suggestionsList.innerHTML = '<p style="font-size: 0.9rem; color: var(--text-light);">No suggestions right now.</p>';
+        }
+      } catch (err) {
+        console.error(err);
+      }
+
+      // Handle create post
+      createPostForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fileInput = document.getElementById('post-image');
+        const captionInput = document.getElementById('post-caption');
+        
+        if (!fileInput.files[0]) return;
+
+        const formData = new FormData();
+        formData.append('image', fileInput.files[0]);
+        formData.append('caption', captionInput.value);
+
+        try {
+          const res = await window.api.createPost(formData);
+          // Prepend newly created post
+          // Note: createPost doesn't populate 'user' by default in backend without a populate call, 
+          // but let's assume we can fetch it again or reload page for simplicity
+          window.location.reload();
+        } catch (err) {
+          alert('Error creating post: ' + err.message);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
