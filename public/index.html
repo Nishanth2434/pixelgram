@@ -26,23 +26,28 @@
 
                 <!-- Right Side Form -->
                 <div class="auth-right">
-                    <h2 class="auth-right-title">Log into PixelGram</h2>
                     
-                    <form id="login-form">
-                        <input type="email" id="login-email" placeholder="Mobile number, username or email" required value="demo@pixelgram.com" class="dark-input">
-                        <input type="password" id="login-password" placeholder="Password" required value="demo1234" class="dark-input">
-                        <button type="submit" class="auth-btn-dark">Log in</button>
-                    </form>
+                    <div id="login-container">
+                        <h2 class="auth-right-title">Log into PixelGram</h2>
+                        <form id="login-form">
+                            <input type="email" id="login-email" placeholder="Mobile number, username or email" required value="demo@pixelgram.com" class="dark-input">
+                            <input type="password" id="login-password" placeholder="Password" required value="demo1234" class="dark-input">
+                            <button type="submit" class="auth-btn-dark">Log in</button>
+                        </form>
 
-                    <div class="forgot-password">Forgot password?</div>
-                    <button class="btn-fb"><i class="fa-brands fa-facebook"></i> Log in with Facebook</button>
+                        <div class="forgot-password">Forgot password?</div>
+                        <button class="btn-fb"><i class="fa-brands fa-facebook"></i> Log in with Facebook</button>
+                    </div>
                     
-                    <form id="register-form" style="display: none; margin-top: 20px;">
-                        <input type="text" id="reg-username" placeholder="Username" required class="dark-input">
-                        <input type="email" id="reg-email" placeholder="Email" required class="dark-input">
-                        <input type="password" id="reg-password" placeholder="Password" required class="dark-input">
-                        <button type="submit" class="auth-btn-dark" style="background-color: #0095f6; color: white;">Sign up</button>
-                    </form>
+                    <div id="register-container" style="display: none;">
+                        <h2 class="auth-right-title">Sign up for PixelGram</h2>
+                        <form id="register-form" style="margin-top: 20px;">
+                            <input type="text" id="reg-username" placeholder="Username" required class="dark-input">
+                            <input type="email" id="reg-email" placeholder="Email" required class="dark-input">
+                            <input type="password" id="reg-password" placeholder="Password" required class="dark-input">
+                            <button type="submit" class="auth-btn-dark" style="background-color: #0095f6; color: white;">Sign up</button>
+                        </form>
+                    </div>
 
                     <button class="btn-create" id="auth-toggle">Create new account</button>
                     <p id="auth-error" class="error"></p>
