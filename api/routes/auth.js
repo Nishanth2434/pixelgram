@@ -49,7 +49,7 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || 'secret123', { expiresIn: '7d' });
         res.json({ token, user: { _id: user._id, username: user.username, avatarUrl: user.avatarUrl } });
     } catch (err) {
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error: ' + err.message, stack: err.stack });
     }
 });
 
