@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PixelGram</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- App Container -->
+    <div id="app-container">
+        
+        <!-- Auth View -->
+        <div id="auth-view" class="view">
+            <div class="auth-box">
+                <h1 class="logo">PixelGram</h1>
+                <form id="login-form">
+                    <input type="email" id="login-email" placeholder="Email" required value="demo@pixelgram.com">
+                    <input type="password" id="login-password" placeholder="Password" required value="demo1234">
+                    <button type="submit" class="btn primary">Log In</button>
+                </form>
+                <div class="divider">OR</div>
+                <form id="register-form" style="display: none;">
+                    <input type="text" id="reg-username" placeholder="Username" required>
+                    <input type="email" id="reg-email" placeholder="Email" required>
+                    <input type="password" id="reg-password" placeholder="Password" required>
+                    <button type="submit" class="btn primary">Sign Up</button>
+                </form>
+                <p id="auth-toggle">Don't have an account? <span class="link">Sign up</span></p>
+                <p id="auth-error" class="error"></p>
+            </div>
+        </div>
+
+        <!-- Main App View -->
+        <div id="main-view" class="view" style="display: none;">
+            <!-- Top Nav -->
+            <nav class="top-nav">
+                <h1 class="logo">PixelGram</h1>
+                <div class="nav-icons">
+                    <i class="fa-regular fa-square-plus" id="nav-create-post"></i>
+                </div>
+            </nav>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                
+                <!-- Home Feed -->
+                <div id="feed-page" class="page active">
+                    <div class="stories-container" id="stories-bar">
+                        <!-- Stories injected here -->
+                    </div>
+                    <div id="posts-container">
+                        <!-- Posts injected here -->
+                    </div>
+                </div>
+
+                <!-- Reels Page -->
+                <div id="reels-page" class="page" style="display: none;">
+                    <div class="reels-container" id="reels-container">
+                        <!-- Reels injected here -->
+                    </div>
+                </div>
+
+                <!-- Profile Page -->
+                <div id="profile-page" class="page" style="display: none;">
+                    <div class="profile-header">
+                        <img src="" alt="avatar" id="profile-avatar" class="avatar-large">
+                        <div class="profile-stats">
+                            <h2 id="profile-username">username</h2>
+                            <div class="stats-row">
+                                <span><strong id="profile-posts-count">0</strong> posts</span>
+                                <span><strong id="profile-followers">0</strong> followers</span>
+                                <span><strong id="profile-following">0</strong> following</span>
+                            </div>
+                            <p id="profile-bio" class="bio"></p>
+                            <button id="profile-action-btn" class="btn secondary">Edit Profile</button>
+                            <button id="logout-btn" class="btn danger" style="margin-top:5px; width: 100%;">Log Out</button>
+                        </div>
+                    </div>
+                    <div class="profile-grid" id="profile-posts-grid">
+                        <!-- Profile posts injected here -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Bottom Mobile Nav -->
+            <nav class="bottom-nav">
+                <i class="fa-solid fa-house nav-item active" data-target="feed-page"></i>
+                <i class="fa-solid fa-play nav-item" data-target="reels-page"></i>
+                <img src="" alt="profile" class="nav-avatar nav-item" id="nav-profile-avatar" data-target="profile-page">
+            </nav>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <!-- Create Post Modal -->
+    <div id="create-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Create New Post</h2>
+            <form id="create-post-form">
+                <input type="url" id="post-image-url" placeholder="Image URL (e.g., https://picsum.photos/600)" required>
+                <textarea id="post-caption" placeholder="Write a caption..."></textarea>
+                <button type="submit" class="btn primary">Share</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Story Viewer Modal -->
+    <div id="story-modal" class="modal">
+        <div class="modal-content story-content">
+            <span class="close-story">&times;</span>
+            <div class="story-progress"><div class="story-progress-bar"></div></div>
+            <div class="story-user-info">
+                <img src="" alt="avatar" id="story-avatar" class="avatar-small">
+                <span id="story-username">username</span>
+            </div>
+            <img src="" id="story-image" alt="story">
+        </div>
+    </div>
+
+    <script src="/js/app.js"></script>
+</body>
+</html>
