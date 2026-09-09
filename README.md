@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="./public/assets/logo.png" alt="Logo" width="100"/>
+</div>
+
 # PixelGram 📸
 
 ![PixelGram UI](https://img.shields.io/badge/UI-Instagram_Clone-e1306c?style=for-the-badge&logo=instagram)
