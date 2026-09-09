@@ -14,12 +14,17 @@ let isConnected = false;
 const connectDB = async () => {
     if (isConnected) return;
     try {
-        let mongoUri = process.env.MONGO_URI;
+        let mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
         if (!mongoUri) {
             console.log('No MONGO_URI provided. Starting in-memory MongoDB...');
-            const { MongoMemoryServer } = require('mongodb-memory-server');
-            const mongoServer = await MongoMemoryServer.create();
-            mongoUri = mongoServer.getUri();
+            try {
+                const { MongoMemoryServer } = require('mongodb-memory-server');
+                const mongoServer = await MongoMemoryServer.create();
+                mongoUri = mongoServer.getUri();
+            } catch (err) {
+                console.error("Failed to start memory server. Make sure MONGO_URI is set in Vercel!");
+                throw err;
+            }
         }
         await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
         console.log(`MongoDB Connected`);
