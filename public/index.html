@@ -98,15 +98,17 @@
     <!-- Modals -->
     <!-- Create Post Modal -->
     <div id="create-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>Create New Post</h2>
-            <form id="create-post-form">
-                <input type="url" id="post-image-url" placeholder="Image URL (e.g., https://picsum.photos/600)" required>
-                <textarea id="post-caption" placeholder="Write a caption..."></textarea>
-                <button type="submit" class="btn primary">Share</button>
-            </form>
-        </div>
+        <form id="create-post-form" class="modal-content ig-modal">
+            <div class="ig-modal-header">
+                <span class="close">&times;</span>
+                <h2>Create new post</h2>
+                <button type="submit" class="ig-share-btn">Share</button>
+            </div>
+            <div class="ig-modal-body">
+                <input type="url" id="post-image-url" placeholder="Image URL (e.g., https://picsum.photos/600)" required class="ig-input">
+                <textarea id="post-caption" placeholder="Write a caption..." class="ig-textarea"></textarea>
+            </div>
+        </form>
     </div>
 
     <!-- Story Viewer Modal -->

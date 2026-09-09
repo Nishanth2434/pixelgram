@@ -225,3 +225,14 @@ input {
 .story-progress { position: absolute; top: 5px; left: 5px; right: 5px; height: 3px; background: rgba(255,255,255,0.3); border-radius: 2px;}
 .story-progress-bar { height: 100%; background: white; width: 0%; border-radius: 2px; }
 .close-story { position: absolute; top: 10px; right: 15px; color: white; text-shadow: 1px 1px 2px black; z-index: 10; }
+
+/* IG Modal Styles */
+.ig-modal { padding: 0; overflow: hidden; border-radius: 12px; }
+.ig-modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #dbdbdb; padding: 10px 15px; }
+.ig-modal-header h2 { font-size: 16px; margin: 0; font-weight: 600; }
+.ig-modal-header .close { float: none; font-size: 24px; font-weight: normal; margin-top: -5px; }
+.ig-share-btn { background: none; border: none; color: #0095f6; font-weight: 600; font-size: 14px; cursor: pointer; }
+.ig-share-btn:hover { color: #00376b; }
+.ig-modal-body { padding: 0; display: flex; flex-direction: column; }
+.ig-input, .ig-textarea { border: none; border-bottom: 1px solid #efefef; padding: 15px; font-size: 14px; border-radius: 0; resize: none; outline: none; width: 100%; box-sizing: border-box; }
+.ig-textarea { min-height: 150px; border-bottom: none; }
