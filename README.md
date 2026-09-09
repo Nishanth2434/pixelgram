@@ -8,6 +8,7 @@
 
 <br/>
 
+[![Live Website](https://img.shields.io/badge/🌐_Live_Website-Visit_Now-2563EB?style=for-the-badge&logoColor=white)](https://pixelgram-omega.vercel.app/)
 [![Version](https://img.shields.io/badge/Version-1.0.0-6366F1?style=for-the-badge)]()
 [![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
 
@@ -22,9 +23,29 @@
 
 ---
 
+## 🌐 Live Demo
+
+<div align="center">
+
+### Try the live website here 👇
+
+<a href="https://pixelgram-omega.vercel.app/">
+  <img src="https://img.shields.io/badge/🚀_LAUNCH_LIVE_APP-pixelgram--omega.vercel.app-2563EB?style=for-the-badge&logoColor=white" alt="Live Website" height="52" />
+</a>
+
+<br/><br/>
+
+| Account | Credentials |
+| :--- | :--- |
+| **Demo Login** | `demo@pixelgram.com` / `demo1234` |
+
+</div>
+
+---
+
 ## 🚀 How to Run Locally
 
-You do **not** need to set up a database to run this project! It uses `mongodb-memory-server` for a zero-setup experience.
+You do **not** need to set up a database to run this project locally! It uses `mongodb-memory-server` for a zero-setup experience.
 
 <div align="center">
 
@@ -34,17 +55,6 @@ You do **not** need to set up a database to run this project! It uses `mongodb-m
 npm install
 npm start
 ```
-
-<a href="http://localhost:3000">
-  <img src="https://img.shields.io/badge/🌐_OPEN_LOCAL_APP-localhost:3000-2563EB?style=for-the-badge&logoColor=white" alt="Live Website" height="52" />
-</a>
-
-<br/><br/>
-
-| Account | Credentials |
-| :--- | :--- |
-| **Demo Login** | `demo@pixelgram.com` / `demo1234` |
-
 </div>
 
 ---
