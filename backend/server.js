@@ -28,7 +28,8 @@ const connectDB = async () => {
 
     } catch (error) {
         console.error('MongoDB connection error:', error);
-        process.exit(1);
+        // On Vercel, if memory-server fails, we just log it. 
+        // Vercel needs a real MONGO_URI to work properly.
     }
 };
 
@@ -46,7 +47,12 @@ app.use((req, res) => {
     res.sendFile(path.join(__dirname, '../public', 'index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+// Only listen if not running on Vercel serverless environment
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`Server running on port ${PORT}`);
+    });
+}
+
+module.exports = app;
