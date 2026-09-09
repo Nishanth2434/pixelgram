@@ -53,16 +53,60 @@
 
         <!-- Main App View -->
         <div id="main-view" class="view" style="display: none;">
-            <!-- Top Nav -->
-            <nav class="top-nav">
-                <h1 class="logo">PixelGram</h1>
-                <div class="nav-icons">
-                    <i class="fa-regular fa-square-plus" id="nav-create-post"></i>
+            <!-- Side Nav (Desktop) / Bottom Nav (Mobile) -->
+            <nav class="side-nav">
+                <div class="nav-brand">
+                    <h1 class="logo desktop-only" style="font-family: 'Brush Script MT', cursive, sans-serif; font-size: 2.2rem;">PixelGram</h1>
+                    <i class="fa-brands fa-instagram mobile-only nav-logo-icon"></i>
+                </div>
+                
+                <div class="nav-links">
+                    <div class="nav-item active" data-target="feed-page">
+                        <i class="fa-solid fa-house"></i>
+                        <span class="desktop-only">Home</span>
+                    </div>
+                    <div class="nav-item desktop-only">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <span>Search</span>
+                    </div>
+                    <div class="nav-item" data-target="reels-page">
+                        <i class="fa-solid fa-video"></i>
+                        <span class="desktop-only">Reels</span>
+                    </div>
+                    <div class="nav-item desktop-only">
+                        <i class="fa-regular fa-comment-dots"></i>
+                        <span>Messages</span>
+                    </div>
+                    <div class="nav-item desktop-only">
+                        <i class="fa-regular fa-heart"></i>
+                        <span>Notifications</span>
+                    </div>
+                    <div class="nav-item" id="nav-create-post">
+                        <i class="fa-regular fa-square-plus"></i>
+                        <span class="desktop-only">Create</span>
+                    </div>
+                    <div class="nav-item" data-target="profile-page">
+                        <img src="" alt="profile" class="nav-avatar" id="nav-profile-avatar">
+                        <span class="desktop-only">Profile</span>
+                    </div>
+                </div>
+                
+                <div class="nav-item more-btn desktop-only" style="margin-top: auto;">
+                    <i class="fa-solid fa-bars"></i>
+                    <span>More</span>
                 </div>
             </nav>
 
-            <!-- Content Area -->
-            <div class="content-area">
+            <!-- Top Nav (Mobile only) -->
+            <nav class="mobile-top-nav">
+                <h1 class="logo" style="font-family: 'Brush Script MT', cursive, sans-serif;">PixelGram</h1>
+                <div class="nav-icons">
+                    <i class="fa-regular fa-heart"></i>
+                    <i class="fa-regular fa-comment-dots"></i>
+                </div>
+            </nav>
+
+            <div class="content-area main-content">
                 
                 <!-- Home Feed -->
                 <div id="feed-page" class="page active">
@@ -104,12 +148,7 @@
 
             </div>
 
-            <!-- Bottom Mobile Nav -->
-            <nav class="bottom-nav">
-                <i class="fa-solid fa-house nav-item active" data-target="feed-page"></i>
-                <i class="fa-solid fa-play nav-item" data-target="reels-page"></i>
-                <img src="" alt="profile" class="nav-avatar nav-item" id="nav-profile-avatar" data-target="profile-page">
-            </nav>
+
         </div>
     </div>
 
