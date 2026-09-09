@@ -5,6 +5,9 @@
 ![ExpressJS](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)
 ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)
 
+## 📸 App Preview
+![PixelGram Feed Screenshot](./public/assets/feed-screenshot.png)
+
 A complete, production-quality mini social media web app styled and functioning like Instagram. Built for **TASK 2: Social Media Platform**.
 
 ## 🎯 Assignment Criteria Met
