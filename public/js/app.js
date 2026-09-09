@@ -89,15 +89,15 @@ function setupEventListeners() {
 function toggleAuthForms() {
     const login = document.getElementById('login-form');
     const register = document.getElementById('register-form');
-    const toggleTxt = document.getElementById('auth-toggle');
+    const toggleBtn = document.getElementById('auth-toggle');
     if (login.style.display !== 'none') {
         login.style.display = 'none';
         register.style.display = 'flex';
-        toggleTxt.innerHTML = `Already have an account? <span class="link">Log in</span>`;
+        toggleBtn.innerText = 'Log into existing account';
     } else {
         login.style.display = 'flex';
         register.style.display = 'none';
-        toggleTxt.innerHTML = `Don't have an account? <span class="link">Sign up</span>`;
+        toggleBtn.innerText = 'Create new account';
     }
 }
 
