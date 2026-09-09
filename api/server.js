@@ -39,6 +39,14 @@ app.use(async (req, res, next) => {
     next();
 });
 
+app.get('/api/debug', async (req, res) => {
+    res.json({
+        hasMongoUri: !!process.env.MONGO_URI,
+        hasMongoDbUri: !!process.env.MONGODB_URI,
+        mongooseState: mongoose.connection.readyState
+    });
+});
+
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
