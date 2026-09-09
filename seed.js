@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
-const User = require('./backend/models/User');
-const Post = require('./backend/models/Post');
-const Story = require('./backend/models/Story');
-const Reel = require('./backend/models/Reel');
-const Comment = require('./backend/models/Comment');
+const User = require('./api/models/User');
+const Post = require('./api/models/Post');
+const Story = require('./api/models/Story');
+const Reel = require('./api/models/Reel');
+const Comment = require('./api/models/Comment');
 
 const usernames = ['alex', 'jordan', 'taylor', 'casey', 'riley', 'morgan', 'jamie', 'quinn', 'avery', 'skyler'];
 const videos = [
