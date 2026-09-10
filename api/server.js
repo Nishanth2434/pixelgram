@@ -15,6 +15,7 @@ const connectDB = async () => {
     if (isConnected) return;
     try {
         let mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
+        if (mongoUri) mongoUri = mongoUri.replace(/^"|"$|^'|'$/g, '').trim();
         if (!mongoUri) {
             console.error("FATAL ERROR: No MONGO_URI or MONGODB_URI provided!");
             process.exit(1);
@@ -40,10 +41,29 @@ app.use(async (req, res, next) => {
 });
 
 app.get('/api/debug', async (req, res) => {
+    let mongoUri = process.env.MONGO_URI || process.env.MONGODB_URI;
+    let connectError = null;
+    
+    if (mongoose.connection.readyState !== 1) {
+        try {
+            // Trim any accidental quotes or spaces the user might have pasted into Vercel
+            if (mongoUri) {
+                mongoUri = mongoUri.replace(/^"|"$|^'|'$/g, '').trim();
+            }
+            await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true, serverSelectionTimeoutMS: 5000 });
+            isConnected = true;
+        } catch (err) {
+            connectError = err.message || err.toString();
+        }
+    }
+
     res.json({
         hasMongoUri: !!process.env.MONGO_URI,
         hasMongoDbUri: !!process.env.MONGODB_URI,
-        mongooseState: mongoose.connection.readyState
+        mongooseState: mongoose.connection.readyState,
+        rawUriStart: mongoUri ? mongoUri.substring(0, 15) : null,
+        uriHasQuotes: process.env.MONGO_URI ? process.env.MONGO_URI.includes('"') : false,
+        error: connectError
     });
 });
 
