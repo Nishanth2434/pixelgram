@@ -20,7 +20,7 @@ const connectDB = async () => {
             console.error("FATAL ERROR: No MONGO_URI or MONGODB_URI provided!");
             process.exit(1);
         }
-        await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+        await mongoose.connect(mongoUri);
         console.log(`MongoDB Connected`);
         isConnected = true;
         
@@ -50,7 +50,7 @@ app.get('/api/debug', async (req, res) => {
             if (mongoUri) {
                 mongoUri = mongoUri.replace(/^"|"$|^'|'$/g, '').trim();
             }
-            await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true, serverSelectionTimeoutMS: 5000 });
+            await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 });
             isConnected = true;
         } catch (err) {
             connectError = err.message || err.toString();
